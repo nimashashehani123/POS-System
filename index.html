@@ -279,8 +279,112 @@
         </table>
     </div>
 
+    <!--------------------------------------- Order Section --------------------------------------------------------->
 
+    <div id="order-section" class="container mt-5">
+        <div class="card my-4">
+            <div class="card-header">Placed Order</div>
+            <div class="card-body">
+                <form id="orderForm">
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="customerSelect" class="form-label">Select Customer</label>
+                            <select class="form-select" id="customerSelect" required>
+                                <option selected disabled value="">Choose a customer</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <label for="customerName" class="form-label">Customer Name</label>
+                            <input type="text" class="form-control" id="customerName" disabled>
+                        </div>
+                    </div>
 
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="itemSelect" class="form-label">Select Item</label>
+                            <select class="form-select" id="itemSelect" required>
+                                <option selected disabled value="">Choose an item</option>
+                            </select>
+                        </div>
+                        <div class="row mb-3">
+                        <div class="col">
+                            <label for="quantityOnHand" class="form-label">Quantity on Hand</label>
+                            <input type="text" class="form-control" id="quantityOnHand" disabled>
+                        </div>
+                            <div class="col">
+                                <label for="date" class="form-label">Date</label>
+                                <input type="date" class="form-control" id="date" disabled>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="itemImage" class="form-label">Item Image</label>
+                            <img id="itemImage2" src="" alt="Item Image" class="img-thumbnail" style="max-width: 100px;">
+                        </div>
+                        <div class="col">
+                            <label for="unitPrice" class="form-label">Unit Price</label>
+                            <input type="text" class="form-control" id="unitPrice" disabled>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="quantity" class="form-label">Quantity</label>
+                        <input type="number" class="form-control" id="quantity" placeholder="Enter quantity" required>
+                    </div>
+                    <button type="button" class="btn btn-warning w-100" id="add-order-btn">Add to Cart</button>
+                </form>
+            </div>
+        </div>
+
+        <!------------------------- Cart  ----------------------------->
+        <h3>Cart Details</h3>
+        <table class="table table-bordered table-striped mt-3">
+            <thead>
+            <tr>
+                <th>Customer</th>
+                <th>Item</th>
+                <th>Image</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Total</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="orderTableBody">
+            </tbody>
+        </table>
+
+        <div class="text-end mt-3">
+            <h4 style="color: white ; margin-top: 5vw">Net Total: Rs. <span id="netTotal">0.00</span></h4>
+            <button class="btn btn-warning" id="placeOrderBtn" style="margin:3vw 0">Place Order</button>
+        </div>
+    </div>
+
+    <!--------------------------------------- Order Details Section--------------------------------------------------->
+
+    <div id="orderdetails-section" class="container mt-5">
+        <div class="mb-3">
+            <label for="itemSearch" class="form-label">Search Items</label>
+            <input type="text" class="form-control" id="orderSearch" placeholder="Search by name or description">
+        </div>
+
+        <h3>Item List</h3>
+        <table class="table table-bordered table-striped mt-3">
+            <thead>
+            <tr>
+                <th>Order Id</th>
+                <th>Customer Name</th>
+                <th>Date</th>
+                <th>Price</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="orderdetailsTableBody">
+            </tbody>
+        </table>
+    </div>
 
 
 
