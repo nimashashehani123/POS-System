@@ -216,8 +216,7 @@
                 <th>Mobile</th>
                 <th>Email</th>
                 <th>Address</th>
-                <th>Delete</th>
-                <th>Update</th>
+                <th>Actions</th>
             </tr>
             </thead>
             <tbody id="customerTableBody">
@@ -400,7 +399,7 @@
 
         /*------------------------------------------------ Login Form --------------------------------------------------------------*/
 
-        $('#login-section').show();
+        $('#main-section').show();
 
 
         $('#loginForm').on('submit', function (e) {
@@ -416,6 +415,37 @@
                  alert('Invalid credentials. Please try again.');
              }
         });
+
+        /*------------------------------------------------- Navigation --------------------------------------------------------------*/
+
+        $('#customer-section, #item-section, #order-section, #orderdetails-section').hide();
+        $('#dashboard-nav').on('click', function () {
+            $('#dashboard-section').show();
+            $('#customer-section, #item-section, #order-section, #orderdetails-section').hide();
+        });
+        $('#customer-nav').on('click', function () {
+            $('#customer-section').show();
+            $('#dashboard-section, #item-section, #order-section, #orderdetails-section').hide();
+        });
+        $('#item-nav').on('click', function () {
+            $('#item-section').show();
+            $('#dashboard-section, #customer-section, #order-section, #orderdetails-section').hide();
+        });
+        $('#order-nav').on('click', function () {
+            $('#order-section').show();
+            $('#dashboard-section, #customer-section, #item-section, #orderdetails-section').hide();
+        });
+        $('#order-history-nav').on('click', function () {
+            $('#orderdetails-section').show();
+            $('#dashboard-section, #customer-section, #item-section, #order-section').hide();
+        });
+        $('#log-out-nav').on('click', function () {
+            $('#login-section').show();
+            $('#main-section').hide();
+            $('#username').val('');
+            $('#password').val('');
+        });
+
 
     });
 
