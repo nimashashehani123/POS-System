@@ -304,10 +304,16 @@
                                 <option selected disabled value="">Choose an item</option>
                             </select>
                         </div>
+                        <div class="row mb-3">
                         <div class="col">
                             <label for="quantityOnHand" class="form-label">Quantity on Hand</label>
                             <input type="text" class="form-control" id="quantityOnHand" disabled>
                         </div>
+                            <div class="col">
+                                <label for="date" class="form-label">Date</label>
+                                <input type="date" class="form-control" id="date" disabled>
+                            </div>
+                            </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col">
@@ -319,15 +325,10 @@
                             <input type="text" class="form-control" id="unitPrice" disabled>
                         </div>
                     </div>
-                    <div class="row mb-3">
+
                     <div class="mb-3">
                         <label for="quantity" class="form-label">Quantity</label>
                         <input type="number" class="form-control" id="quantity" placeholder="Enter quantity" required>
-                    </div>
-                        <div class="col">
-                            <label for="date" class="form-label">Date</label>
-                            <input type="date" class="form-control" id="date" disabled>
-                        </div>
                     </div>
                     <button type="button" class="btn btn-warning w-100" id="add-order-btn">Add to Cart</button>
                 </form>
