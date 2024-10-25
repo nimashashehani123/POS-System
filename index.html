@@ -50,7 +50,7 @@
             color: white;
         }
         .form-control,.form-select{
-            background: rgba(256, 256, 256, 0.5);
+            background: rgba(256, 256, 256, 0.6);
             box-shadow: 0 2px 15px rgba(256, 256, 256, 0.25);
         }
 
@@ -58,7 +58,7 @@
  </head>
 <body>
 
-<!---------------------------------------   --- Login Section ----------------------------------------------------->
+<!------------------------------------------ Login Section ----------------------------------------------------->
 
 <div id="login-section" class=" container mt-5">
     <div class="row justify-content-center">
@@ -86,7 +86,7 @@
 </div>
 
 
-<!---------------------------------------- Main Section (Dashboard, Customer, Item, Order Pages) -------------------------------------->
+<!---------------------------------------- Main Section -------------------------------------->
 
 <div id="main-section">
 
@@ -172,6 +172,10 @@
             <div class="card-header">Manage Customer</div>
             <div class="card-body">
                 <form id="customerForm">
+                    <div class="col">
+                        <label for="customerid" class="form-label">Customer Id</label>
+                        <input type="text" class="form-control" id="customerid" readonly>
+                    </div>
                     <div class="row mb-3">
                         <div class="col">
                             <label for="firstName" class="form-label">First Name</label>
@@ -211,6 +215,7 @@
         <table class="table table-bordered table-striped mt-3">
             <thead>
             <tr>
+                <th>Id</th>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Mobile</th>
@@ -395,7 +400,7 @@
 
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="../lib/jquery-3.7.1.min.js"></script>
 <script>
     $(document).ready(function () {
 
@@ -444,6 +449,133 @@
             $('#username').val('');
             $('#password').val('');
         });
+
+
+
+        /*------------------------------------------------ Customer Manage ----------------------------------------------------------*/
+        let customer_array = [];
+        let editingRow = null;
+
+
+        //generate id
+        const getNextCustomerId = () => {
+            return customer_array.length > 0 ? customer_array.length + 1 : 1;
+        };
+
+        //load customers
+        const loadCustomerTable = () => {
+            $("#customerTableBody").empty();
+
+            customer_array.forEach(item => {
+                const customerRow = `
+            <tr data-id="${item.cusid}">
+                <td>${item.cusid}</td>
+                <td>${item.firstname}</td>
+                <td>${item.lastname}</td>
+                <td>${item.mobile}</td>
+                <td>${item.email}</td>
+                <td>${item.address}</td>
+                <td>
+                    <button class="btn btn-danger btn-sm delete-btn">delete</button>
+                    <button class="btn btn-secondary btn-sm update-btn">update</button>
+                </td>
+            </tr>`;
+                $('#customerTableBody').append(customerRow);
+            });
+
+            $('#customerid').val(getNextCustomerId());
+        };
+
+        //save
+        const saveCustomer = () => {
+            const cus_id = editingRow ? $('#customerid').val() : getNextCustomerId();
+            const firstName = $('#firstName').val();
+            const lastName = $('#lastName').val();
+            const mobile = $('#mobile').val();
+            const email = $('#email').val();
+            const address = $('#address').val();
+
+            let customer = {
+                cusid: cus_id,
+                firstname: firstName,
+                lastname: lastName,
+                mobile: mobile,
+                email: email,
+                address: address,
+            };
+
+            if (editingRow) {
+
+                const index = customer_array.findIndex(item => item.cusid == cus_id);
+                if (index !== -1) {
+                    customer_array[index] = customer;
+                }
+                editingRow = null;
+                $('#add-customer-btn').text('Add Customer');
+            } else {
+
+                customer_array.push(customer);
+            }
+
+            $('#customerForm')[0].reset();
+            loadCustomerTable();
+        };
+
+        //delete
+        const deleteCustomer = (cus_id) => {
+            customer_array = customer_array.filter(item => item.cusid != cus_id);
+            loadCustomerTable();
+        };
+
+        //update
+        const editCustomer = (cus_id) => {
+            const customer = customer_array.find(item => item.cusid == cus_id);
+            if (customer) {
+                $('#customerid').val(customer.cusid);
+                $('#firstName').val(customer.firstname);
+                $('#lastName').val(customer.lastname);
+                $('#mobile').val(customer.mobile);
+                $('#email').val(customer.email);
+                $('#address').val(customer.address);
+                editingRow = $(`#customerTableBody tr[data-id="${cus_id}"]`);
+                $('#add-customer-btn').text('Update Customer');
+            }
+        };
+
+       // Search
+        const searchCustomers = (searchValue) => {
+            const lowerCaseValue = searchValue.toLowerCase();
+            $('#customerTableBody tr').filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(lowerCaseValue) > -1);
+            });
+        };
+
+
+        $('#add-customer-btn').on('click', saveCustomer);
+
+        $('#customerTableBody').on('click', '.delete-btn', function () {
+            const cus_id = $(this).closest('tr').data('id');
+            deleteCustomer(cus_id);
+        });
+
+        $('#customerTableBody').on('click', '.update-btn', function () {
+            const cus_id = $(this).closest('tr').data('id');
+            editCustomer(cus_id);
+        });
+
+        $('#customerSearch').on('keyup', function () {
+            const value = $(this).val();
+            searchCustomers(value);
+        });
+
+
+        $('#customerForm').on('reset', function () {
+            editingRow = null;
+            $('#add-customer-btn').text('Add Customer');
+        });
+
+
+        loadCustomerTable();
 
     });
 </script>
