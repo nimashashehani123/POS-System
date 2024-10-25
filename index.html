@@ -38,6 +38,18 @@
             box-shadow: 0 2px 15px rgba(256, 256, 256, 0.25);
         }
 
+        .card-header{
+            color: white;
+        }
+
+        h3{
+            color: white;
+        }
+        .form-control,.form-select{
+            background: rgba(256, 256, 256, 0.5);
+            box-shadow: 0 2px 15px rgba(256, 256, 256, 0.25);
+        }
+
     </style>
  </head>
 <body>
@@ -76,7 +88,7 @@
 
     <!-------------------------------------------- Navbar ------------------------------------------------>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg fw-bolder bg-warning">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">BURGER CAFE</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -147,6 +159,71 @@
             </div>
         </div>
     </div>
+
+
+    <!--------------------------------------- Customer Section ------------------------------------------------------>
+
+    <div id="customer-section" class="container mt-5">
+        <div class="card my-4">
+            <div class="card-header">Enter Customer Details</div>
+            <div class="card-body">
+                <form id="customerForm">
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="firstName" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="firstName" placeholder="First Name" required>
+                        </div>
+                        <div class="col">
+                            <label for="lastName" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="lastName" placeholder="Last Name" required>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="mobile" class="form-label">Mobile Number</label>
+                            <input type="text" class="form-control" id="mobile" placeholder="Mobile Number" required>
+                        </div>
+                        <div class="col">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" placeholder="Email" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Address</label>
+                        <textarea class="form-control" id="address" rows="3" placeholder="Enter Address" required></textarea>
+                    </div>
+                    <button type="button" class="btn btn-warning w-100" id="add-customer-btn">Add Customer</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Search Bar for Customers -->
+        <div class="mb-3">
+            <label for="customerSearch" class="form-label">Search Customers</label>
+            <input type="text" class="form-control" id="customerSearch" placeholder="Search by name, email, or mobile number">
+        </div>
+
+        <h3>Customer List</h3>
+        <table class="table table-bordered table-striped mt-3">
+            <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Mobile</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>Delete</th>
+                <th>Update</th>
+            </tr>
+            </thead>
+            <tbody id="customerTableBody">
+            <!-- Customer rows will be dynamically added here -->
+            </tbody>
+        </table>
+    </div>
+
+
+
 
 </div>
 
