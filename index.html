@@ -207,6 +207,7 @@
         </div>
 
         <h3>Customer List</h3>
+        <div class="table-responsive">
         <table class="table table-bordered table-striped mt-3">
             <thead>
             <tr>
@@ -221,6 +222,7 @@
             <tbody id="customerTableBody">
             </tbody>
         </table>
+        </div>
     </div>
 
 
@@ -266,6 +268,7 @@
         </div>
 
         <h3>Item List</h3>
+        <div class="table-responsive">
         <table class="table table-bordered table-striped mt-3">
             <thead>
             <tr>
@@ -280,6 +283,7 @@
             <tbody id="itemTableBody">
             </tbody>
         </table>
+        </div>
     </div>
 
     <!--------------------------------------- Order Section --------------------------------------------------------->
@@ -340,6 +344,7 @@
         </div>
         <!------------------------- Cart  ----------------------------->
         <h3>Cart Details</h3>
+        <div class="table-responsive">
         <table class="table table-bordered table-striped mt-3">
             <thead>
             <tr>
@@ -355,6 +360,7 @@
             <tbody id="orderTableBody">
             </tbody>
         </table>
+        </div>
 
         <div class="text-end mt-3">
             <h4 style="color: white ; margin-top: 5vw">Net Total: Rs. <span id="netTotal">0.00</span></h4>
@@ -370,6 +376,7 @@
             <input type="text" class="form-control" id="orderSearch" placeholder="Search by name or description">
         </div>
         <h3>Item List</h3>
+        <div class="table-responsive">
         <table class="table table-bordered table-striped mt-3">
             <thead>
             <tr>
@@ -383,6 +390,7 @@
             <tbody id="orderdetailsTableBody">
             </tbody>
         </table>
+        </div>
     </div>
 
 </div>
@@ -393,7 +401,7 @@
 
         /*------------------------------------------------ Login Form --------------------------------------------------------------*/
 
-        $('#login-section').show();
+        $('#main-section').show();
         $('#loginForm').on('submit', function (e) {
             e.preventDefault();
             const username = $('#username').val();
