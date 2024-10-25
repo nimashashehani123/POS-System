@@ -10,11 +10,10 @@
             background: #000;
         }
 
-        .card{
+        #login-card{
             background: url("https://i.pinimg.com/564x/90/e4/82/90e4824224b82a769281ae3502e92e6c.jpg");
             background-size: cover;
             background-repeat: no-repeat;
-
             min-height: 90vh;
             gap: 10rem;
         }
@@ -38,7 +37,7 @@
 <div id="login-section" class=" container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-4 ">
-            <div class="card">
+            <div id="login-card" class="card">
                 <div class="card-header text-center">
                     <h3 class="login-tag">Login Form</h3>
                 </div>
@@ -97,6 +96,48 @@
             </div>
         </div>
     </nav>
+
+
+    <!----------------------------------------- Dashboard -------------------------------------------------------->
+
+    <div id="dashboard-section" class="container mt-4">
+        <h2 class="text-center mb-4">Dashboard Overview</h2>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card text-white bg-primary mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Customers</h5>
+                        <p class="card-text fs-2" id="customerCount">0</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-success mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Items</h5>
+                        <p class="card-text fs-2" id="itemCount">0</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-warning mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Orders</h5>
+                        <p class="card-text fs-2" id="orderCount">0</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-danger mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Revenue</h5>
+                        <p class="card-text fs-2" id="totalRevenue">0</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 </body>
