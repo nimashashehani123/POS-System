@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
 
-        #login-section, #main-section {
+        #login-section, #main-section,#singup-section {
             display: none;
         }
         body{
@@ -80,7 +80,7 @@
                         <button type="submit" class="btn btn-warning w-100 " style="margin:3vw 0">Login</button>
                     </form>
                     <p class="text-center mt-3" style="color: white;">
-                        Don't have an account? <a href="#" onclick="showSignUp()" style="color: gold;">Sign up here</a>
+                        Don't have an account? <a id="signuplink" href="#singup-section" onclick="showSignUp()">Sign up here</a>
                     </p>
                 </div>
             </div>
@@ -101,7 +101,7 @@
                     <h3 class="tag">SignUp Form</h3>
                 </div>
                 <div class="class body">
-                    <form id="signUpForm" style="padding: 0vw 2vw ">
+                    <form id="signUpForm" style="padding: 0vw 1.5vw ">
                         <div class="mb-3">
                             <label for="signUpName" class="form-label">Name</label>
                             <input type="text" class="form-control" id="signUpName" placeholder="Enter your name" required>
@@ -121,7 +121,7 @@
                         <button type="submit" class="btn btn-warning w-100 " style="margin:2vw 0">Sign Up</button>
                     </form>
                     <p class="text-center mt-3" style="color: white">
-                        Already have an account? <a href="#" onclick="showLogin()" style="color: gold">Login here</a>
+                        Already have an account? <a href="#login-section" onclick="showLogin()" style="color: gold">Login here</a>
                     </p>
                 </div>
             </div>
@@ -453,9 +453,22 @@
 <script>
     $(document).ready(function () {
 
+        $('#login-section').show();
+
+        function showSignUp() {
+            $('#login-section').addClass('hidden'); // Hide login section
+            $('#signup-section').removeClass('hidden'); // Show sign-up section
+        }
+
+
+        function showLogin() {
+            document.getElementById('signUpForm').classList.add('hidden');
+            document.getElementById('loginForm').classList.remove('hidden');
+        }
+
+
         /*------------------------------------------------ Login Form --------------------------------------------------------------*/
 
-        $('#main-section').show();
         $('#loginForm').on('submit', function (e) {
             e.preventDefault();
             const username = $('#username').val();
