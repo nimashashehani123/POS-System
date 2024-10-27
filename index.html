@@ -14,15 +14,15 @@
             background: #000;
         }
 
-        #login-card{
+        #login-card,#signup-card{
             background: url("https://i.pinimg.com/564x/90/e4/82/90e4824224b82a769281ae3502e92e6c.jpg");
             background-size: cover;
             background-repeat: no-repeat;
             min-height: 90vh;
-            gap: 10rem;
+            gap: 5rem;
         }
 
-        .login-tag{
+        .tag{
             color: white;
             font-family: Consolas;
             font-size: 3rem;
@@ -62,10 +62,10 @@
 
 <div id="login-section" class=" container mt-5">
     <div class="row justify-content-center">
-        <div class="col-md-4 ">
+        <div class="col-md-4">
             <div id="login-card" class="card">
                 <div class="card-header text-center">
-                    <h3 class="login-tag">Login Form</h3>
+                    <h3 class="tag">Login Form</h3>
                 </div>
                 <div class="card-body">
                     <form id="loginForm">
@@ -77,8 +77,52 @@
                             <label for="password" class="form-label">Password</label>
                             <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
                         </div>
-                        <button type="submit" class="btn btn-warning w-100 ">Login</button>
+                        <button type="submit" class="btn btn-warning w-100 " style="margin:3vw 0">Login</button>
                     </form>
+                    <p class="text-center mt-3" style="color: white;">
+                        Don't have an account? <a href="#" onclick="showSignUp()" style="color: gold;">Sign up here</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!------------------------------------------- Sign-Up Section -------------------------------------------------->
+
+<div id="singup-section" class=" container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div id="signup-card" class="card">
+                <div class="card-header text-center">
+                    <h3 class="tag">SignUp Form</h3>
+                </div>
+                <div class="class body">
+                    <form id="signUpForm" style="padding: 0vw 2vw ">
+                        <div class="mb-3">
+                            <label for="signUpName" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="signUpName" placeholder="Enter your name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="signUpEmail">Email</label>
+                            <input type="email" class="form-control" id="signUpEmail" placeholder="Enter your email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="signUpUsername">Username</label>
+                            <input type="text" class="form-control" id="signUpUsername" placeholder="Choose a username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="signUpPassword">Password</label>
+                            <input type="password" class="form-control" id="signUpPassword" placeholder="Choose a password" required>
+                        </div>
+                        <button type="submit" class="btn btn-warning w-100 " style="margin:2vw 0">Sign Up</button>
+                    </form>
+                    <p class="text-center mt-3" style="color: white">
+                        Already have an account? <a href="#" onclick="showLogin()" style="color: gold">Login here</a>
+                    </p>
                 </div>
             </div>
         </div>
@@ -428,26 +472,32 @@
         /*------------------------------------------------- Navigation --------------------------------------------------------------*/
 
         $('#customer-section, #item-section, #order-section, #orderdetails-section').hide();
+
         $('#dashboard-nav').on('click', function () {
             $('#dashboard-section').show();
             $('#customer-section, #item-section, #order-section, #orderdetails-section').hide();
         });
+
         $('#customer-nav').on('click', function () {
             $('#customer-section').show();
             $('#dashboard-section, #item-section, #order-section, #orderdetails-section').hide();
         });
+
         $('#item-nav').on('click', function () {
             $('#item-section').show();
             $('#dashboard-section, #customer-section, #order-section, #orderdetails-section').hide();
         });
+
         $('#order-nav').on('click', function () {
             $('#order-section').show();
             $('#dashboard-section, #customer-section, #item-section, #orderdetails-section').hide();
         });
+
         $('#order-history-nav').on('click', function () {
             $('#orderdetails-section').show();
             $('#dashboard-section, #customer-section, #item-section, #order-section').hide();
         });
+
         $('#log-out-nav').on('click', function () {
             $('#login-section').show();
             $('#main-section').hide();
@@ -456,18 +506,17 @@
         });
 
 
-
         /*------------------------------------------------ Customer Manage ----------------------------------------------------------*/
         let customer_array = [];
         let editingRow = null;
 
 
-        //generate id
+//generate id
         const getNextCustomerId = () => {
             return customer_array.length > 0 ? customer_array.length + 1 : 1;
         };
 
-        //load customers
+//load customers
         const loadCustomerTable = () => {
             $("#customerTableBody").empty();
 
@@ -491,7 +540,7 @@
             $('#customerid').val(getNextCustomerId());
         };
 
-        //save
+//save
         const saveCustomer = () => {
             const cus_id = editingRow ? $('#customerid').val() : getNextCustomerId();
             const firstName = $('#firstName').val();
@@ -524,15 +573,17 @@
 
             $('#customerForm')[0].reset();
             loadCustomerTable();
+
+            console.log(customer_array)
         };
 
-        //delete
+//delete
         const deleteCustomer = (cus_id) => {
             customer_array = customer_array.filter(item => item.cusid != cus_id);
             loadCustomerTable();
         };
 
-        //update
+//update
         const editCustomer = (cus_id) => {
             const customer = customer_array.find(item => item.cusid == cus_id);
             if (customer) {
@@ -547,7 +598,7 @@
             }
         };
 
-       // Search
+// Search
         const searchCustomers = (searchValue) => {
             const lowerCaseValue = searchValue.toLowerCase();
             $('#customerTableBody tr').filter(function () {
@@ -585,18 +636,15 @@
 
         /*------------------------------------------------ Item Manage ----------------------------------------------------------*/
 
-
-
-
         let item_array = [];
         let editingItem = null;
 
-        //generate id
+//generate id
         const getNextItemId = () => {
             return item_array.length > 0 ? item_array.length + 1 : 1;
         };
 
-        //load items
+//load items
         const loadItemTable = () => {
             $("#itemTableBody").empty();
 
@@ -620,7 +668,7 @@
             $('#itemid').val(getNextItemId());
         };
 
-        //save
+//save
         const saveItem = () => {
             const item_id = editingItem ? $('#itemid').val() : getNextItemId();
             const itemName = $('#itemName').val();
@@ -660,15 +708,14 @@
             loadItemTable();
         };
 
-       //delete
+//delete
         const deleteItem = (item_id) => {
             item_array = item_array.filter(item => item.itemid != item_id);
             loadItemTable();
         };
 
 
-        //update
-
+//update
         const editItem = (item_id) => {
             const item = item_array.find(item => item.itemid == item_id);
             if (item) {
@@ -685,8 +732,7 @@
             }
         };
 
-       //search
-
+//search
         const searchItems = (searchValue) => {
             const lowerCaseValue = searchValue.toLowerCase();
             $('#itemTableBody tr').filter(function () {
@@ -719,6 +765,21 @@
 
         loadItemTable();
 
+
+
+
+        /*------------------------------------------------ Order Manage ----------------------------------------------------------*/
+
+
+        let cart = [];
+        let selectedCustomer = null;
+
+        customer_array.forEach(customer => $('#customerSelect').append(`<option value="${customer.cusid}">${customer.firstname}</option>`));
+        item_array.forEach(item => $('#itemSelect').append(`<option value="${item.itemid}">${item.name}</option>`));
+
+        $('#customerSelect').change(function () {
+            selectedCustomer = customer_array.find(c => c.cusid == $(this).val())?.firstname || '';
+        });
 
     });
 </script>
