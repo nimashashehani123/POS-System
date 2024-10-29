@@ -7,19 +7,29 @@ let editingRow = null;
 
 //generate id
 const getNextCustomerId = () => {
-    return customer_array.length > 0 ? customer_array.length + 1 : 1;
+    let id1 ;
+    let index = customer_array.length;
+
+    if(index > 0 ){
+        id1 = customer_array[customer_array.length - 1].id;
+    }else {
+        id1 = 0;
+    }
+
+    let id = id1 + 1;
+    return id;
 };
 
 //load customers
 const loadCustomerTable = () => {
     $("#customerTableBody").empty();
 
-    customer_array.forEach(item => {
+    customer_array.map((item ,index ) => {
         const customerRow = `
-            <tr data-id="${item.cusid}">
-                <td>${item.cusid}</td>
-                <td>${item.firstname}</td>
-                <td>${item.lastname}</td>
+            <tr data-id="${item.id}">
+                <td>${item.id}</td>
+                <td>${item.first_name}</td>
+                <td>${item.last_name}</td>
                 <td>${item.mobile}</td>
                 <td>${item.email}</td>
                 <td>${item.address}</td>
