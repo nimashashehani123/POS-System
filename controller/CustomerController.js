@@ -1,9 +1,7 @@
 import CustomerModel from "../models/CustomerModel.js";
 import {customer_array} from "../db/database.js";
 
-
 let editingRow = null;
-
 
 //generate id
 const getNextCustomerId = () => {
@@ -26,7 +24,7 @@ const loadCustomerTable = () => {
 
     customer_array.map((item ,index ) => {
         const customerRow = `
-            <tr data-id="${item.id}">
+            <tr>
                 <td>${item.id}</td>
                 <td>${item.first_name}</td>
                 <td>${item.last_name}</td>
@@ -95,6 +93,7 @@ const saveCustomer = () => {
 
 //delete
 const deleteCustomer = (cus_id) => {
+
     let index = -1;
 
     // Find the index of the selected customer by ID
@@ -107,7 +106,6 @@ const deleteCustomer = (cus_id) => {
 
     if (index !== -1) {
         customer_array.splice(index, 1);
-        console.log(customer_array);
 
         $('#customerForm')[0].reset();
         loadCustomerTable();
@@ -139,7 +137,8 @@ const searchCustomers = (searchValue) => {
 $('#add-customer-btn').on('click', saveCustomer);
 
 $('#customerTableBody').on('click', '.delete-btn', function () {
-    const cus_id = $(this).closest('tr').data('id');
+    const index = $(this).closest('tr').index();
+    const cus_id = customer_array[index].id;
     deleteCustomer(cus_id);
 });
 

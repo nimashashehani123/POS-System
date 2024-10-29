@@ -1,20 +1,29 @@
-import {item_array} from "../db/database.js";
+import {customer_array, item_array} from "../db/database.js";
 import ItemModel from "../models/ItemModel.js";
 
 let editingItem = null;
-
 //generate id
 const getNextItemId = () => {
-    return item_array.length > 0 ? item_array.length + 1 : 1;
+    let id1 ;
+    let index = item_array.length;
+
+    if(index > 0 ){
+        id1 = item_array[item_array.length - 1].itemid;
+    }else {
+        id1 = 0;
+    }
+
+    let id = id1 + 1;
+    return id;
 };
 
 //load items
 const loadItemTable = () => {
     $("#itemTableBody").empty();
 
-    item_array.forEach(item => {
+    item_array.map((item,index) => {
         const itemRow = `
-        <tr data-id="${item.itemid}">
+        <tr>
             <td>${item.itemid}</td>
             <td>${item.name}</td>
             <td>${item.description}</td>
@@ -28,7 +37,6 @@ const loadItemTable = () => {
         </tr>`;
         $('#itemTableBody').append(itemRow);
     });
-
     $('#itemid').val(getNextItemId());
 };
 
@@ -37,7 +45,7 @@ const saveItem = () => {
     const item_id = editingItem ? $('#itemid').val() : getNextItemId();
     const itemName = $('#itemName').val();
     const itemDescription = $('#itemDescription').val();
-    const quantity = $('#quantity').val();
+    const quantity = $('#qty').val();
     const price = $('#price').val();
     const itemImage = $('#itemImage')[0].files[0];
     let imageURL = '';
@@ -51,9 +59,30 @@ const saveItem = () => {
     let item = new ItemModel(item_id,itemName,itemDescription,quantity,price,imageURL);
 
     if (editingItem) {
-        const index = item_array.findIndex(item => item.itemid == item_id);
+        let index = -1;
+
+        for (let i = 0; i < item_array.length; i++) {
+            if (item_array[i].itemid === editingItem.itemid) {
+                index = i;
+                break;
+            }
+        }
+        let id = editingItem.itemid;
+        const itemName = $('#itemName').val();
+        const itemDescription = $('#itemDescription').val();
+        const quantity = $('#quantity').val();
+        const price = $('#price').val();
+        let itemImage = $('#itemImage')[0].files[0];
+
         if (index !== -1) {
-            item_array[index] = item;
+            let item = new ItemModel(id,
+                itemName,
+                itemDescription,
+                quantity,
+                price,
+                itemImage);
+
+           item_array[index] = item;
         }
         editingItem = null;
         $('#add-item-btn').text('Add Item');
@@ -67,8 +96,24 @@ const saveItem = () => {
 
 //delete
 const deleteItem = (item_id) => {
-    item_array = item_array.filter(item => item.itemid != item_id);
-    loadItemTable();
+    let index = -1;
+
+    for (let i = 0; i < item_array.length; i++) {
+        console.log(item_array[i].itemid);
+        console.log(item_id);
+        if (item_array[i].itemid === item_id) {
+            index = i;
+            break;
+        }
+    }
+
+    if (index !== -1) {
+        item_array.splice(index, 1);
+
+        $('#itemForm')[0].reset();
+        loadItemTable();
+    }
+
 };
 
 
@@ -101,12 +146,13 @@ const searchItems = (searchValue) => {
 $('#add-item-btn').on('click', saveItem);
 
 $('#itemTableBody').on('click', '.delete-item-btn', function () {
-    const item_id = $(this).closest('tr').data('id');
+    const index = $(this).closest('tr').index();
+    const item_id = item_array[index].itemid;
     deleteItem(item_id);
 });
 
 $('#itemTableBody').on('click', '.update-item-btn', function () {
-    const item_id = $(this).closest('tr').data('id');
+    const item_id = $(this).closest('tr').data('itemid');
     editItem(item_id);
 });
 
