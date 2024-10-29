@@ -76,8 +76,23 @@ const saveCustomer = () => {
 
 //delete
 const deleteCustomer = (cus_id) => {
-    customer_array = customer_array.filter(item => item.cusid != cus_id);
-    loadCustomerTable();
+    let index = -1;
+
+    // Find the index of the selected customer by ID
+    for (let i = 0; i < customer_array.length; i++) {
+        if (customer_array[i].id === cus_id) {
+            index = i;
+            break;
+        }
+    }
+
+    if (index !== -1) {
+        customer_array.splice(index, 1);
+        console.log(customer_array);
+
+        $('#customerForm')[0].reset();
+        loadCustomerTable();
+    }
 };
 
 //update
