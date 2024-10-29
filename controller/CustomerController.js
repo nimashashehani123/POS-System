@@ -56,12 +56,32 @@ const saveCustomer = () => {
     let customer = new CustomerModel(cus_id,firstName,lastName,mobile,email,address);
 
     if (editingRow) {
+        let index = -1;
 
-        const index = customer_array.findIndex(item => item.cusid == cus_id);
+        for (let i = 0; i < customer_array.length; i++) {
+            if (customer_array[i].id === editingRow.id) {
+                index = i;
+                break;
+            }
+        }
+        let id = editingRow.id;
+        let first_name = $("#firstName").val();
+        let last_name = $("#lastName").val();
+        let mobile = $("#mobile").val();
+        let email = $("#email").val();
+        let address = $("#address").val();
+
         if (index !== -1) {
+            let customer = new CustomerModel(id,
+                first_name,
+                last_name,
+                mobile,
+                email,
+                address);
+
             customer_array[index] = customer;
         }
-        editingRow = null;
+            editingRow = null;
         $('#add-customer-btn').text('Add Customer');
     } else {
 
@@ -70,7 +90,6 @@ const saveCustomer = () => {
 
     $('#customerForm')[0].reset();
     loadCustomerTable();
-
     console.log(customer_array)
 };
 
@@ -96,16 +115,15 @@ const deleteCustomer = (cus_id) => {
 };
 
 //update
-const editCustomer = (cus_id) => {
-    const customer = customer_array.find(item => item.cusid == cus_id);
+const editCustomer = (customer) => {
     if (customer) {
-        $('#customerid').val(customer.cusid);
-        $('#firstName').val(customer.firstname);
-        $('#lastName').val(customer.lastname);
+        $('#customerid').val(customer.id);
+        $('#firstName').val(customer.first_name);
+        $('#lastName').val(customer.last_name);
         $('#mobile').val(customer.mobile);
         $('#email').val(customer.email);
         $('#address').val(customer.address);
-        editingRow = $(`#customerTableBody tr[data-id="${cus_id}"]`);
+        editingRow = customer;
         $('#add-customer-btn').text('Update Customer');
     }
 };
@@ -118,7 +136,6 @@ const searchCustomers = (searchValue) => {
     });
 };
 
-
 $('#add-customer-btn').on('click', saveCustomer);
 
 $('#customerTableBody').on('click', '.delete-btn', function () {
@@ -127,21 +144,14 @@ $('#customerTableBody').on('click', '.delete-btn', function () {
 });
 
 $('#customerTableBody').on('click', '.update-btn', function () {
-    const cus_id = $(this).closest('tr').data('id');
-    editCustomer(cus_id);
+    let index = $(this).closest('tr').index();
+    editCustomer(customer_array[index]);
 });
 
 $('#customerSearch').on('keyup', function () {
     const value = $(this).val();
     searchCustomers(value);
 });
-
-
-$('#customerForm').on('reset', function () {
-    editingRow = null;
-    $('#add-customer-btn').text('Add Customer');
-});
-
 
 loadCustomerTable();
 
