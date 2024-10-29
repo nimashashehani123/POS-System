@@ -2,6 +2,19 @@ import {customer_array, item_array} from "../db/database.js";
 import ItemModel from "../models/ItemModel.js";
 
 let editingItem = null;
+
+$('#itemImage').on('change', function () {
+    const file = this.files[0];
+    console.log("File selected:", file); // Check if file is logged correctly
+    if (file) {
+        const imageURL = URL.createObjectURL(file);
+        $('#imagePreview').attr('src', imageURL).show();
+    } else {
+        $('#imagePreview').attr('src', '').hide();
+    }
+});
+
+
 //generate id
 const getNextItemId = () => {
     let id1 ;
@@ -52,8 +65,9 @@ const saveItem = () => {
 
     if (itemImage) {
         imageURL = URL.createObjectURL(itemImage);
+
     } else if (editingItem) {
-        imageURL = item_array.find(item => item.itemid == item_id).imageURL;
+        imageURL = editingItem.imageURL;
     }
 
     let item = new ItemModel(item_id,itemName,itemDescription,quantity,price,imageURL);
@@ -72,7 +86,6 @@ const saveItem = () => {
         const itemDescription = $('#itemDescription').val();
         const quantity = $('#quantity').val();
         const price = $('#price').val();
-        let itemImage = $('#itemImage')[0].files[0];
 
         if (index !== -1) {
             let item = new ItemModel(id,
@@ -80,7 +93,7 @@ const saveItem = () => {
                 itemDescription,
                 quantity,
                 price,
-                itemImage);
+                imageURL);
 
            item_array[index] = item;
         }
@@ -118,18 +131,15 @@ const deleteItem = (item_id) => {
 
 
 //update
-const editItem = (item_id) => {
-    const item = item_array.find(item => item.itemid == item_id);
+const editItem = (item) => {
     if (item) {
         $('#itemid').val(item.itemid);
         $('#itemName').val(item.name);
         $('#itemDescription').val(item.description);
         $('#quantity').val(item.quantity);
         $('#price').val(item.price);
-        $('#imagePreview').attr('src', item.imageURL);
-        $('#imagePreviewContainer').show();
-
-        editingItem = $(`#itemTableBody tr[data-id="${item_id}"]`);
+        $('#imagePreview').attr('src', item.imageURL).show();
+        editingItem = item;
         $('#add-item-btn').text('Update Item');
     }
 };
@@ -152,8 +162,8 @@ $('#itemTableBody').on('click', '.delete-item-btn', function () {
 });
 
 $('#itemTableBody').on('click', '.update-item-btn', function () {
-    const item_id = $(this).closest('tr').data('itemid');
-    editItem(item_id);
+    let index = $(this).closest('tr').index();
+    editItem(item_array[index]);
 });
 
 $('#itemSearch').on('keyup', function () {
@@ -161,11 +171,5 @@ $('#itemSearch').on('keyup', function () {
     searchItems(value);
 });
 
-$('#itemForm').on('reset', function () {
-    editingItem = null;
-    $('#add-item-btn').text('Add Item');
-});
-
 loadItemTable();
-
 
