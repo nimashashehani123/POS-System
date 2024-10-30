@@ -1,5 +1,6 @@
 import {customer_array, item_array} from "../db/database.js";
 import ItemModel from "../models/ItemModel.js";
+import {loadItemselect} from "./OrderController.js";
 
 let editingItem = null;
 
@@ -101,6 +102,7 @@ const saveItem = () => {
         $('#add-item-btn').text('Add Item');
     } else {
         item_array.push(item);
+        loadItemselect();
     }
 
     $('#itemForm')[0].reset();

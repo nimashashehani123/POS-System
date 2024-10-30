@@ -1,5 +1,6 @@
 import CustomerModel from "../models/CustomerModel.js";
 import {customer_array} from "../db/database.js";
+import {loadCustomerselect} from "./OrderController.js";
 
 let editingRow = null;
 
@@ -84,6 +85,8 @@ const saveCustomer = () => {
     } else {
 
         customer_array.push(customer);
+        loadCustomerselect();
+
     }
 
     $('#customerForm')[0].reset();
