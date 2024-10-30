@@ -22,7 +22,7 @@ const getNextItemId = () => {
     let index = item_array.length;
 
     if(index > 0 ){
-        id1 = item_array[item_array.length - 1].itemid;
+        id1 = Number(item_array[item_array.length - 1].itemid);
     }else {
         id1 = 0;
     }

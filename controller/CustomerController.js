@@ -10,7 +10,7 @@ const getNextCustomerId = () => {
     let index = customer_array.length;
 
     if(index > 0 ){
-        id1 = customer_array[customer_array.length - 1].id;
+        id1 = Number(customer_array[customer_array.length - 1].id);
     }else {
         id1 = 0;
     }
@@ -99,7 +99,6 @@ const deleteCustomer = (cus_id) => {
 
     let index = -1;
 
-    // Find the index of the selected customer by ID
     for (let i = 0; i < customer_array.length; i++) {
         if (customer_array[i].id === cus_id) {
             index = i;

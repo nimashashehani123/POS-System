@@ -347,6 +347,10 @@
             <div class="card-header">Placed Order</div>
             <div class="card-body">
                 <form id="orderForm">
+                    <div class="col">
+                        <label for="orderid" class="form-label">Order Id</label>
+                        <input type="text" class="form-control" id="orderid" readonly>
+                    </div>
                     <div class="row mb-3">
                         <div class="col">
                             <label for="customerSelect" class="form-label">Select Customer</label>
@@ -392,7 +396,7 @@
                         <label for="quantity" class="form-label">Quantity</label>
                         <input type="number" class="form-control" id="quantity" placeholder="Enter quantity" required>
                     </div>
-                    <button type="button" class="btn btn-warning w-100" id="add-order-btn">Add to Cart</button>
+                    <button type="button" class="btn btn-warning w-100" id="addorderbtn">Add to Cart</button>
                 </form>
             </div>
         </div>
@@ -402,9 +406,7 @@
         <table class="table table-bordered table-striped mt-3">
             <thead>
             <tr>
-                <th>Customer</th>
                 <th>Item</th>
-                <th>Image</th>
                 <th>Quantity</th>
                 <th>Unit Price</th>
                 <th>Total</th>
@@ -466,6 +468,9 @@
             document.getElementById('loginForm').classList.remove('hidden');
         }
 
+
+        const today = new Date().toISOString().split('T')[0];
+        $('#date').val(today);
 
         /*------------------------------------------------ Login Form --------------------------------------------------------------*/
 
