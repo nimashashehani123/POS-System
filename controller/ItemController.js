@@ -1,6 +1,6 @@
 import {customer_array, item_array} from "../db/database.js";
 import ItemModel from "../models/ItemModel.js";
-import {loadItemselect} from "./OrderController.js";
+import {loadItemselect,clearorderform} from "./OrderController.js";
 
 let editingItem = null;
 
@@ -85,7 +85,7 @@ const saveItem = () => {
         let id = editingItem.itemid;
         const itemName = $('#itemName').val();
         const itemDescription = $('#itemDescription').val();
-        const quantity = $('#quantity').val();
+        const quantity = $('#qty').val();
         const price = $('#price').val();
 
         if (index !== -1) {
@@ -106,6 +106,7 @@ const saveItem = () => {
     }
 
     $('#itemForm')[0].reset();
+    clearorderform();
     loadItemTable();
 };
 
@@ -126,6 +127,7 @@ const deleteItem = (item_id) => {
         item_array.splice(index, 1);
 
         $('#itemForm')[0].reset();
+        clearorderform();
         loadItemTable();
     }
 
@@ -138,7 +140,7 @@ const editItem = (item) => {
         $('#itemid').val(item.itemid);
         $('#itemName').val(item.name);
         $('#itemDescription').val(item.description);
-        $('#quantity').val(item.quantity);
+        $('#qty').val(item.quantity);
         $('#price').val(item.price);
         $('#imagePreview').attr('src', item.imageURL).show();
         editingItem = item;

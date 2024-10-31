@@ -173,8 +173,8 @@ const updateQtyOnHand = (itemid,quantityPurchased) => {
     item_array[index] = demoitem;
 }
 
-const clearorderform = () =>{
-    $('#itemSelect').val('');
+export const clearorderform = () =>{
+    $('#itemSelect').val('Select Item');
     $('#quantityOnHand').val('');
     $('#unitPrice').val('');
     $('#quantity').val('');
@@ -206,18 +206,21 @@ const loadToCart = () =>{
 const deleteCartItem = (item_id) => {
 
     let index = -1;
+    let quantityToReturn = 0;
 
     for (let i = 0; i < cart.length; i++) {
         if (cart[i].itemid === item_id) {
             index = i;
+            quantityToReturn = parseInt(cart[i].qty);
             break;
         }
     }
 
     if (index !== -1) {
         cart.splice(index, 1);
-        updateQtyOnHand2(item_id,cart[index].qty);
+        updateQtyOnHand2(item_id,quantityToReturn);
         loadToCart();
+        clearorderform();
     }
 }
 
@@ -234,7 +237,7 @@ const updateQtyOnHand2 = (itemid,quantityPurchased) => {
     }
 
     if (item) {
-        item.quantity += quantityPurchased;
+        item.quantity += parseInt(quantityPurchased);
     }
 
     let demoitem = new ItemModel(item.itemid,item.name,item.description,item.quantity,item.price,item.imageURL);
@@ -271,6 +274,7 @@ const placedOrder = () =>{
     $('#customerName').val('');
     $('#orderTableBody').empty();
     $('#netTotal').text('0.00');
+    cart.length = 0;
     loadOrderTable();
 
 }
