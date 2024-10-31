@@ -462,7 +462,11 @@
                 $('#login-section').hide();
                 $('#main-section').show();
             } else {
-                alert('Invalid credentials. Please try again.');
+                Swal.fire({
+                    title: "Oops!",
+                    text: "Invalid credentials. Please try again",
+                    icon: "error"
+                });
             }
         });
 
