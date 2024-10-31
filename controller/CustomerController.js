@@ -1,6 +1,7 @@
 import CustomerModel from "../models/CustomerModel.js";
 import {customer_array} from "../db/database.js";
 import {loadCustomerselect} from "./OrderController.js";
+import {validmobile,validemail} from "../utill/Validation.js";
 
 let editingRow = null;
 
@@ -52,48 +53,113 @@ const saveCustomer = () => {
     const email = $('#email').val();
     const address = $('#address').val();
 
-    let customer = new CustomerModel(cus_id,firstName,lastName,mobile,email,address);
 
-    if (editingRow) {
-        let index = -1;
+      if (firstName.length === 0) {
+          Swal.fire({
+              title: "Invalid Input!",
+              text: "Invalid first name",
+              icon: "error"
+          });
 
-        for (let i = 0; i < customer_array.length; i++) {
-            if (customer_array[i].id === editingRow.id) {
-                index = i;
-                break;
-            }
-        }
-        let id = editingRow.id;
-        let first_name = $("#firstName").val();
-        let last_name = $("#lastName").val();
-        let mobile = $("#mobile").val();
-        let email = $("#email").val();
-        let address = $("#address").val();
+      }else if(lastName.length === 0) {
+          Swal.fire({
+              title: "Error!",
+              text: "Invalid last name",
+              icon: "error"
+          });
 
-        if (index !== -1) {
-            let customer = new CustomerModel(id,
-                first_name,
-                last_name,
-                mobile,
-                email,
-                address);
+      }else if(!validmobile(mobile)) {
+          Swal.fire({
+              title: "Error!",
+              text: "Invalid mobile",
+              icon: "error"
+          });
 
-            customer_array[index] = customer;
-        }
-            editingRow = null;
-        $('#add-customer-btn').text('Add Customer');
-    } else {
+      }else if(!validemail(email)) {
+          Swal.fire({
+              title: "Error!",
+              text: "Invalid email",
+              icon: "error"
+          });
 
-        customer_array.push(customer);
-        $('#customerCount').text(customer_array.length);
-        $('#customerName').val('');
-        loadCustomerselect();
 
-    }
+      }else if(address.length === 0) {
+          Swal.fire({
+              title: "Error!",
+              text: "Invalid address",
+              icon: "error"
+          });
 
-    $('#customerForm')[0].reset();
-    loadCustomerTable();
-    console.log(customer_array)
+      }else {
+
+          let customer = new CustomerModel(cus_id, firstName, lastName, mobile, email, address);
+
+          if (editingRow) {
+              let index = -1;
+
+              for (let i = 0; i < customer_array.length; i++) {
+                  if (customer_array[i].id === editingRow.id) {
+                      index = i;
+                      break;
+                  }
+              }
+              let id = editingRow.id;
+              let first_name = $("#firstName").val();
+              let last_name = $("#lastName").val();
+              let mobile = $("#mobile").val();
+              let email = $("#email").val();
+              let address = $("#address").val();
+
+              if (index !== -1) {
+                  let customer = new CustomerModel(id,
+                      first_name,
+                      last_name,
+                      mobile,
+                      email,
+                      address);
+
+                  Swal.fire({
+                      title: "Do you want to update the changes?",
+                      showDenyButton: true,
+                      showCancelButton: true,
+                      confirmButtonText: "Update",
+                      denyButtonText: `Don't update`
+                  }).then((result) => {
+                      if (result.isConfirmed) {
+
+                  customer_array[index] = customer;
+
+                          Swal.fire("Updated!", "", "success");
+                      } else if (result.isDenied) {
+                          Swal.fire("Changes are not updated", "", "info");
+                      }
+                  })
+              }
+              editingRow = null;
+              $('#add-customer-btn').text('Add Customer');
+          } else {
+              Swal.fire({
+                  title: "Do you want to save the changes?",
+                  showDenyButton: true,
+                  showCancelButton: true,
+                  confirmButtonText: "Save",
+                  denyButtonText: `Don't save`
+              }).then((result) => {
+                  if (result.isConfirmed) {
+                      customer_array.push(customer);
+                      $('#customerCount').text(customer_array.length);
+                      $('#customerName').val('');
+                      loadCustomerselect();
+                      $('#customerForm')[0].reset();
+                      loadCustomerTable();
+                      console.log(customer_array)
+                      Swal.fire("Saved!", "", "success");
+                  } else if (result.isDenied) {
+                      Swal.fire("Changes are not saved", "", "info");
+                  }
+              })
+          }
+      }
 };
 
 //delete
