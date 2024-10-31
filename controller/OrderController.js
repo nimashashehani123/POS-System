@@ -201,6 +201,7 @@ const loadToCart = () =>{
     });
 
     $('#netTotal').text(calculateTotal().toFixed(2));
+    $('#discountedTotal').text(calculateTotal().toFixed(2));
 };
 
 const deleteCartItem = (item_id) => {
@@ -264,14 +265,14 @@ const placedOrder = () =>{
    let orderid = $('#orderid').val();
    let customername = $('#customerName').val();
    let date = $('#date').val();
-   let total = calculateNetTotal();
+    let total = parseFloat($('#discountedTotal').text()) || 0;
 
 
     let order = new OrderModel(orderid,customername,date,total);
 
     order_array.push(order);
     clearorderform();
-    $('#customerSelect').val('');
+    $('#customerSelect').val('Select Customer');
     $('#customerName').val('');
     $('#orderTableBody').empty();
     $('#netTotal').text('0.00');
@@ -289,20 +290,33 @@ const calculateTotal = () =>{
     return parseFloat(total);
 }
 
-const calculateNetTotal = () =>{
-    console.log("afsdfsd");
-    let discount = $('#discount').val();
-    console.log(discount);
-    let total = parseFloat($('#netTotal').val());
-    console.log(total);
-     if(discount > 0){
-         console.log(total - (total * (discount/100)));
-         return total - (total * (discount/100));
-     }else {
-         console.log(total);
-         return total;
-     }
-}
+const calculateNetTotal = () => {
+    let discount = parseFloat($('#discount').val()) || 0;
+    let total = parseFloat($('#netTotal').text()) || 0;
+
+    let discountedTotal;
+
+    if (discount > 0) {
+        discountedTotal = total - (total * (discount / 100));
+    } else {
+        discountedTotal = total;
+    }
+
+    console.log("Discount:", discount);
+    console.log("Total:", total);
+    console.log("Discounted Total:", discountedTotal);
+    $('#discountedTotal').text(discountedTotal.toFixed(2));
+    $('#discount').val('');
+    return discountedTotal;
+};
+
+const searchOrders = (searchValue) => {
+    const lowerCaseValue = searchValue.toLowerCase();
+    $('#orderdetailsTableBody tr').filter(function () {
+        $(this).toggle($(this).text().toLowerCase().indexOf(lowerCaseValue) > -1);
+    });
+};
+
 
 $('#addorderbtn').on('click', addToCart)
 $('#orderTableBody').on('click', '.delete-btn', function () {
@@ -320,4 +334,9 @@ $('#orderdetailsTableBody').on('click', '.delete-order-btn', function () {
 
 $('#discountbtn').on('click',calculateNetTotal)
 
+// Update event listener for order search
+$('#orderSearch').on('keyup', function () {
+    const value = $(this).val();
+    searchOrders(value);
+});
 loadOrderTable();
