@@ -264,7 +264,8 @@ const placedOrder = () =>{
    let orderid = $('#orderid').val();
    let customername = $('#customerName').val();
    let date = $('#date').val();
-   let total = calculateTotal();
+   let total = calculateNetTotal();
+
 
     let order = new OrderModel(orderid,customername,date,total);
 
@@ -274,6 +275,7 @@ const placedOrder = () =>{
     $('#customerName').val('');
     $('#orderTableBody').empty();
     $('#netTotal').text('0.00');
+    $('#discountedTotal').text('0.00');
     cart.length = 0;
     loadOrderTable();
 
@@ -285,6 +287,21 @@ const calculateTotal = () =>{
         total += cart[i].total;
     }
     return parseFloat(total);
+}
+
+const calculateNetTotal = () =>{
+    console.log("afsdfsd");
+    let discount = $('#discount').val();
+    console.log(discount);
+    let total = parseFloat($('#netTotal').val());
+    console.log(total);
+     if(discount > 0){
+         console.log(total - (total * (discount/100)));
+         return total - (total * (discount/100));
+     }else {
+         console.log(total);
+         return total;
+     }
 }
 
 $('#addorderbtn').on('click', addToCart)
@@ -300,5 +317,7 @@ $('#orderdetailsTableBody').on('click', '.delete-order-btn', function () {
     const order_id = order_array[index].orderid;
     deleteOrder(order_id);
 });
+
+$('#discountbtn').on('click',calculateNetTotal)
 
 loadOrderTable();

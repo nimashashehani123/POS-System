@@ -419,9 +419,31 @@
         </div>
 
         <div class="text-end mt-3">
-            <h4 style="color: white ; margin-top: 5vw">Net Total: Rs. <span id="netTotal">0.00</span></h4>
-            <button class="btn btn-warning" id="placeOrderBtn" style="margin:3vw 0">Place Order</button>
+            <h4 style="color: white; margin-top: 5vw;">Total: Rs. <span id="netTotal">0.00</span></h4>
         </div>
+
+        <div class="text-end mt-3">
+            <div class="row mb-3 justify-content-end">
+                <div class="col-auto">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="discount" placeholder="Enter discount" required>
+                        <span class="input-group-text">%</span>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <button type="button" class="btn btn-warning" id="discountbtn">Apply Discount</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-end mt-3">
+            <h4 style="color: white;margin-top: 5vw;">Net Total: Rs. <span id="discountedTotal">0.00</span></h4>
+        </div>
+
+        <div class="text-end mt-3">
+            <button class="btn btn-warning" id="placeOrderBtn" style="margin-bottom: 3vw;">Place Order</button>
+        </div>
+
     </div>
 
     <!--------------------------------------- Order Details Section--------------------------------------------------->
