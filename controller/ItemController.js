@@ -102,6 +102,7 @@ const saveItem = () => {
         $('#add-item-btn').text('Add Item');
     } else {
         item_array.push(item);
+        $('#itemCount').text(item_array.length);
         loadItemselect();
     }
 
@@ -125,6 +126,7 @@ const deleteItem = (item_id) => {
 
     if (index !== -1) {
         item_array.splice(index, 1);
+        $('#itemCount').text(item_array.length);
 
         $('#itemForm')[0].reset();
         clearorderform();

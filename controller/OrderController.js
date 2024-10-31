@@ -257,6 +257,8 @@ const deleteOrder = (order_id) =>{
 
     if (index !== -1) {
         order_array.splice(index, 1);
+        $('#orderCount').text(order_array.length);
+        $('#totalRevenue').text(`Rs. ${totalRevenue()}`);
         loadOrderTable();
     }
 }
@@ -271,6 +273,8 @@ const placedOrder = () =>{
     let order = new OrderModel(orderid,customername,date,total);
 
     order_array.push(order);
+    $('#orderCount').text(order_array.length);
+    $('#totalRevenue').text(`Rs. ${totalRevenue()}`);
     clearorderform();
     $('#customerSelect').val('Select Customer');
     $('#customerName').val('');
@@ -316,6 +320,15 @@ const searchOrders = (searchValue) => {
         $(this).toggle($(this).text().toLowerCase().indexOf(lowerCaseValue) > -1);
     });
 };
+
+
+export const totalRevenue = () =>{
+    let total = 0;
+    for (let i = 0; i < order_array.length; i++) {
+        total += order_array[i].total;
+    }
+    return parseFloat(total);
+}
 
 
 $('#addorderbtn').on('click', addToCart)

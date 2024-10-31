@@ -85,6 +85,7 @@ const saveCustomer = () => {
     } else {
 
         customer_array.push(customer);
+        $('#customerCount').text(customer_array.length);
         $('#customerName').val('');
         loadCustomerselect();
 
@@ -109,6 +110,7 @@ const deleteCustomer = (cus_id) => {
 
     if (index !== -1) {
         customer_array.splice(index, 1);
+        $('#customerCount').text(customer_array.length);
 
         $('#customerForm')[0].reset();
         $('#customerName').val('');
