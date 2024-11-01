@@ -130,19 +130,59 @@ const saveItem = () => {
                     price,
                     imageURL);
 
+                Swal.fire({
+                    title: "Do you want to update the changes?",
+                    showDenyButton: true,
+                    showCancelButton: true,
+                    confirmButtonText: "Update",
+                    denyButtonText: `Don't update`
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
                 item_array[index] = item;
+                        loadItemselect();
+                        $('#itemForm')[0].reset();
+                        loadItemTable();
+
+                        Swal.fire("Updated!", "", "success");
+                    } else if (result.isDenied) {
+                        Swal.fire("Changes are not updated", "", "info");
+                        $('#itemForm')[0].reset();
+                        loadItemTable();
+                    }
+                    $('#itemForm')[0].reset();
+                    loadItemTable();
+                })
             }
             editingItem = null;
             $('#add-item-btn').text('Add Item');
         } else {
+            Swal.fire({
+                title: "Do you want to save the changes?",
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: "Save",
+                denyButtonText: `Don't save`
+            }).then((result) => {
+                if (result.isConfirmed) {
+
             item_array.push(item);
             $('#itemCount').text(item_array.length);
-            loadItemselect();
+                    loadItemselect();
+                    $('#itemForm')[0].reset();
+                    clearorderform();
+                    loadItemTable();
+                    Swal.fire("Saved!", "", "success");
+                } else if (result.isDenied) {
+                    Swal.fire("Changes are not saved", "", "info");
+                    $('#itemForm')[0].reset();
+                    loadItemTable();
+                }
+                $('#itemForm')[0].reset();
+                loadItemTable();
+                })
         }
 
-        $('#itemForm')[0].reset();
-        clearorderform();
-        loadItemTable();
     }
 
 };
@@ -161,12 +201,28 @@ const deleteItem = (item_id) => {
     }
 
     if (index !== -1) {
+
+        Swal.fire({
+            title: "Do you want to delete Item?",
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: "Delete",
+            denyButtonText: `Don't delete`
+        }).then((result) => {
+            if (result.isConfirmed) {
+
         item_array.splice(index, 1);
         $('#itemCount').text(item_array.length);
 
         $('#itemForm')[0].reset();
         clearorderform();
         loadItemTable();
+
+                Swal.fire("Deleted!", "", "success");
+            } else if (result.isDenied) {
+                Swal.fire("Item is not deleted", "", "info");
+            }
+        })
     }
 
 };
