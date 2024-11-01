@@ -71,44 +71,80 @@ const saveItem = () => {
         imageURL = editingItem.imageURL;
     }
 
-    let item = new ItemModel(item_id,itemName,itemDescription,quantity,price,imageURL);
+    if (itemName.length === 0) {
+        Swal.fire({
+            title: "Invalid Input!",
+            text: "Invalid itemName",
+            icon: "error"
+        });
 
-    if (editingItem) {
-        let index = -1;
-
-        for (let i = 0; i < item_array.length; i++) {
-            if (item_array[i].itemid === editingItem.itemid) {
-                index = i;
-                break;
-            }
-        }
-        let id = editingItem.itemid;
-        const itemName = $('#itemName').val();
-        const itemDescription = $('#itemDescription').val();
-        const quantity = $('#qty').val();
-        const price = $('#price').val();
-
-        if (index !== -1) {
-            let item = new ItemModel(id,
-                itemName,
-                itemDescription,
-                quantity,
-                price,
-                imageURL);
-
-           item_array[index] = item;
-        }
-        editingItem = null;
-        $('#add-item-btn').text('Add Item');
+    }else if (quantity.length === 0 || Number(quantity) <= 0) {
+        Swal.fire({
+            title: "Invalid Input!",
+            text: "Invalid quantity",
+            icon: "error"
+        });
+    } else if (itemDescription.length === 0) {
+        Swal.fire({
+            title: "Invalid Input!",
+            text: "Invalid itemDescription",
+            icon: "error"
+        });
+    }else if (price.length === 0|| Number(price) <= 0) {
+        Swal.fire({
+            title: "Invalid Input!",
+            text: "Invalid price",
+            icon: "error"
+        });
+    }else if (imageURL.length === 0) {
+        Swal.fire({
+            title: "Invalid Input!",
+            text: "Invalid image",
+            icon: "error"
+        });
     } else {
-        item_array.push(item);
-        $('#itemCount').text(item_array.length);
-        loadItemselect();
+
+
+        let item = new ItemModel(item_id, itemName, itemDescription, quantity, price, imageURL);
+
+        if (editingItem) {
+            let index = -1;
+
+            for (let i = 0; i < item_array.length; i++) {
+                if (item_array[i].itemid === editingItem.itemid) {
+                    index = i;
+                    break;
+                }
+            }
+            let id = editingItem.itemid;
+            const itemName = $('#itemName').val();
+            const itemDescription = $('#itemDescription').val();
+            const quantity = $('#qty').val();
+            const price = $('#price').val();
+
+            if (index !== -1) {
+                let item = new ItemModel(id,
+                    itemName,
+                    itemDescription,
+                    quantity,
+                    price,
+                    imageURL);
+
+                item_array[index] = item;
+            }
+            editingItem = null;
+            $('#add-item-btn').text('Add Item');
+        } else {
+            item_array.push(item);
+            $('#itemCount').text(item_array.length);
+            loadItemselect();
+        }
+
+        $('#itemForm')[0].reset();
+        clearorderform();
+        loadItemTable();
     }
 
-    $('#itemForm')[0].reset();
-    clearorderform();
-    loadItemTable();
 };
 
 //delete
