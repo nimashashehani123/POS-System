@@ -127,12 +127,19 @@ const saveCustomer = () => {
                   }).then((result) => {
                       if (result.isConfirmed) {
 
-                  customer_array[index] = customer;
+                          customer_array[index] = customer;
+                          loadCustomerselect();
+                          $('#customerForm')[0].reset();
+                          loadCustomerTable();
 
                           Swal.fire("Updated!", "", "success");
                       } else if (result.isDenied) {
                           Swal.fire("Changes are not updated", "", "info");
+                          $('#customerForm')[0].reset();
+                          loadCustomerTable();
                       }
+                      $('#customerForm')[0].reset();
+                      loadCustomerTable();
                   })
               }
               editingRow = null;
@@ -156,6 +163,8 @@ const saveCustomer = () => {
                       Swal.fire("Saved!", "", "success");
                   } else if (result.isDenied) {
                       Swal.fire("Changes are not saved", "", "info");
+                      $('#customerForm')[0].reset();
+                      loadCustomerTable();
                   }
               })
           }
@@ -164,7 +173,6 @@ const saveCustomer = () => {
 
 //delete
 const deleteCustomer = (cus_id) => {
-
     let index = -1;
 
     for (let i = 0; i < customer_array.length; i++) {
@@ -175,13 +183,29 @@ const deleteCustomer = (cus_id) => {
     }
 
     if (index !== -1) {
+        Swal.fire({
+            title: "Do you want to delete Customer?",
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: "Delete",
+            denyButtonText: `Don't delete`
+        }).then((result) => {
+            if (result.isConfirmed) {
+
         customer_array.splice(index, 1);
         $('#customerCount').text(customer_array.length);
 
         $('#customerForm')[0].reset();
         $('#customerName').val('');
         loadCustomerTable();
+
+                Swal.fire("Deleted!", "", "success");
+            } else if (result.isDenied) {
+                Swal.fire("Customer is not deleted", "", "info");
+            }
+        })
     }
+
 };
 
 //update
