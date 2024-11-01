@@ -166,6 +166,8 @@ const saveCustomer = () => {
                       $('#customerForm')[0].reset();
                       loadCustomerTable();
                   }
+                  $('#customerForm')[0].reset();
+                  loadCustomerTable();
               })
           }
       }
