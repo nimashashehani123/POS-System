@@ -58,36 +58,36 @@ const saveCustomer = () => {
           Swal.fire({
               title: "Invalid Input!",
               text: "Invalid first name",
-              icon: "error"
+              icon: "warning"
           });
 
       }else if(lastName.length === 0) {
           Swal.fire({
-              title: "Error!",
+              title: "Invalid Input!",
               text: "Invalid last name",
-              icon: "error"
+              icon: "warning"
           });
 
       }else if(!validmobile(mobile)) {
           Swal.fire({
-              title: "Error!",
+              title: "Invalid Input!",
               text: "Invalid mobile",
-              icon: "error"
+              icon: "warning"
           });
 
       }else if(!validemail(email)) {
           Swal.fire({
-              title: "Error!",
+              title: "Invalid Input!",
               text: "Invalid email",
-              icon: "error"
+              icon: "warning"
           });
 
 
       }else if(address.length === 0) {
           Swal.fire({
-              title: "Error!",
+              title: "Invalid Input!",
               text: "Invalid address",
-              icon: "error"
+              icon: "warning"
           });
 
       }else {

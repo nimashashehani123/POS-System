@@ -2,6 +2,7 @@ import {customer_array,item_array,order_array,cart} from "../db/database.js";
 import OrderModel from "../models/OrderModel.js";
 import CartModel from "../models/cartModel.js";
 import ItemModel from "../models/ItemModel.js";
+import {loadItemTable} from "./ItemController.js";
 
 //generate id
 const getNextOrderId = () => {
@@ -109,47 +110,73 @@ const loadOrderTable = () => {
 
 //add to cart
 const addToCart = () =>{
+  let customerid =  $('#customerName').val();
   let itemid = $('#itemSelect').val();
   let qty = $('#quantity').val();
   let unitprice = $('#unitPrice').val();
   let quantityOnHand = parseInt($('#quantityOnHand').val(), 10);
 
-    if (qty > quantityOnHand) {
-        alert("Quantity exceeds available stock!");
+    if (customerid.length === 0) {
+        Swal.fire({
+            title: "Invalid Input!",
+            text: "Please select Customer",
+            icon: "warning"
+        });
+    }else if (unitprice.length === 0) {
+        Swal.fire({
+            title: "Invalid Input!",
+            text: "Please select an Item",
+            icon: "warning"
+        });
+    }else if(qty.length === 0){
+        Swal.fire({
+            title: "Invalid Input!",
+            text: "Invalid quantity!",
+            icon: "warning"
+        });
+
         $('#quantity').focus();
-        return;
-    }
+    }else if (qty > quantityOnHand) {
+        Swal.fire({
+            title: "Oops!",
+            text: "Quantity exceeds available stock!",
+            icon: "warning"
+        });
 
-  let total = qty * unitprice;
+        $('#quantity').focus();
+    }else {
 
-    let index = -1;
+        let total = qty * unitprice;
 
-    for (let i = 0; i < cart.length; i++) {
-        if (cart[i].itemid === itemid) {
-            index = i;
-            break;
+        let index = -1;
+
+        for (let i = 0; i < cart.length; i++) {
+            if (cart[i].itemid === itemid) {
+                index = i;
+                break;
+            }
         }
+
+        if (index !== -1) {
+            let item = cart[index];
+            let qty1 = parseInt(item.qty) + parseInt(qty);
+            console.log(qty1)
+            item.qty = qty1;
+            console.log(item.qty);
+            item.total = item.qty * unitprice;
+            cart[index] = item;
+            updateQtyOnHand(itemid, qty);
+
+        } else {
+            let cartitem = new CartModel(itemid, qty, unitprice, total);
+            cart.push(cartitem);
+            updateQtyOnHand(itemid, qty);
+        }
+        clearorderform();
+        console.log(cart);
+        loadToCart();
+
     }
-
-    if (index !== -1) {
-        let item = cart[index];
-        let qty1 = parseInt(item.qty) + parseInt(qty);
-        console.log(qty1)
-        item.qty = qty1;
-        console.log(item.qty);
-        item.total = item.qty * unitprice;
-        cart[index] = item;
-        updateQtyOnHand(itemid,qty);
-
-    } else {
-        let cartitem = new CartModel(itemid,qty,unitprice,total);
-        cart.push(cartitem);
-        updateQtyOnHand(itemid,qty);
-    }
-    clearorderform();
-    console.log(cart);
-    loadToCart();
-
 };
 
 const updateQtyOnHand = (itemid,quantityPurchased) => {
@@ -171,6 +198,7 @@ const updateQtyOnHand = (itemid,quantityPurchased) => {
 
     let demoitem = new ItemModel(item.itemid,item.name,item.description,item.quantity,item.price,item.imageURL);
     item_array[index] = demoitem;
+    loadItemTable();
 }
 
 export const clearorderform = () =>{
@@ -243,6 +271,7 @@ const updateQtyOnHand2 = (itemid,quantityPurchased) => {
 
     let demoitem = new ItemModel(item.itemid,item.name,item.description,item.quantity,item.price,item.imageURL);
     item_array[index] = demoitem;
+    loadItemTable();
 }
 const deleteOrder = (order_id) =>{
 
@@ -256,10 +285,24 @@ const deleteOrder = (order_id) =>{
     }
 
     if (index !== -1) {
+        Swal.fire({
+            title: "Do you want to delete Order?",
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: "Delete",
+            denyButtonText: `Don't delete`
+        }).then((result) => {
+            if (result.isConfirmed) {
+
         order_array.splice(index, 1);
         $('#orderCount').text(order_array.length);
         $('#totalRevenue').text(`Rs. ${totalRevenue()}`);
         loadOrderTable();
+                Swal.fire("Deleted!", "", "success");
+            } else if (result.isDenied) {
+                Swal.fire("Order is not deleted", "", "info");
+            }
+        })
     }
 }
 
@@ -269,12 +312,51 @@ const placedOrder = () =>{
    let date = $('#date').val();
     let total = parseFloat($('#discountedTotal').text()) || 0;
 
+    if (cart.length == 0) {
+        Swal.fire({
+            title: "Your Cart is Empty",
+            text: "Please add items before proceeding to checkout!",
+            icon: "warning"
+        });
 
-    let order = new OrderModel(orderid,customername,date,total);
+    }else if(customername.length === 0){
+        Swal.fire({
+            title: "Oops!",
+            text: "Please select customer before proceeding to checkout!",
+            icon: "warning"
+        });
 
-    order_array.push(order);
-    $('#orderCount').text(order_array.length);
-    $('#totalRevenue').text(`Rs. ${totalRevenue()}`);
+    }else {
+
+        let order = new OrderModel(orderid, customername, date, total);
+
+        Swal.fire({
+            title: "Do you want to place the order?",
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: "Placed Order",
+            denyButtonText: `Don't save`
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+        order_array.push(order);
+        clearorderform();
+        $('#orderCount').text(order_array.length);
+        $('#totalRevenue').text(`Rs. ${totalRevenue()}`);
+        allclear();
+        Swal.fire("Order Placed!", "Your order has been successfully placed.", "success");
+            } else if (result.isDenied) {
+                Swal.fire("Order Not Saved", "Your order was not saved.", "info");
+                restoreQuantities();
+            }
+            allclear();
+        })
+    }
+
+}
+
+
+const allclear = () =>{
     clearorderform();
     $('#customerSelect').val('Select Customer');
     $('#customerName').val('');
@@ -283,8 +365,37 @@ const placedOrder = () =>{
     $('#discountedTotal').text('0.00');
     cart.length = 0;
     loadOrderTable();
-
 }
+
+const restoreQuantities = () => {
+    for (let i = 0; i < cart.length; i++) {
+        let cartItem = cart[i];
+        let quantityPurchased = cart[i].qty;
+
+        let item = null;
+        let index = -1;
+
+        for (let j = 0; j < item_array.length; j++) {
+            if (item_array[j].itemid == cartItem.itemid) {
+                item = item_array[j];
+                index = j;
+                break;
+            }
+        }
+
+        if (item) {
+            item.quantity += parseInt(quantityPurchased);
+        }
+
+        let demoitem = new ItemModel(item.itemid,item.name,item.description,item.quantity,item.price,item.imageURL);
+        item_array[index] = demoitem;
+        loadItemTable();
+    }
+
+    cart.length = 0;
+    loadToCart();
+    loadOrderTable();
+};
 
 const calculateTotal = () =>{
     let total = 0;

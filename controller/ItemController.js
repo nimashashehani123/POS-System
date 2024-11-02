@@ -32,7 +32,7 @@ const getNextItemId = () => {
 };
 
 //load items
-const loadItemTable = () => {
+export const loadItemTable = () => {
     $("#itemTableBody").empty();
 
     item_array.map((item,index) => {
@@ -94,13 +94,13 @@ const saveItem = () => {
         Swal.fire({
             title: "Invalid Input!",
             text: "Invalid price",
-            icon: "error"
+            icon: "warning"
         });
     }else if (imageURL.length === 0) {
         Swal.fire({
             title: "Invalid Input!",
             text: "Invalid image",
-            icon: "error"
+            icon: "warning"
         });
     } else {
 
@@ -143,6 +143,7 @@ const saveItem = () => {
                         loadItemselect();
                         $('#itemForm')[0].reset();
                         loadItemTable();
+                        clearorderform();
 
                         Swal.fire("Updated!", "", "success");
                     } else if (result.isDenied) {
