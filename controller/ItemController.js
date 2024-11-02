@@ -75,20 +75,20 @@ const saveItem = () => {
         Swal.fire({
             title: "Invalid Input!",
             text: "Invalid itemName",
-            icon: "error"
+            icon: "warning"
         });
 
     }else if (quantity.length === 0 || Number(quantity) <= 0) {
         Swal.fire({
             title: "Invalid Input!",
             text: "Invalid quantity",
-            icon: "error"
+            icon: "warning"
         });
     } else if (itemDescription.length === 0) {
         Swal.fire({
             title: "Invalid Input!",
             text: "Invalid itemDescription",
-            icon: "error"
+            icon: "warning"
         });
     }else if (price.length === 0|| Number(price) <= 0) {
         Swal.fire({
@@ -237,7 +237,9 @@ const editItem = (item) => {
         $('#itemDescription').val(item.description);
         $('#qty').val(item.quantity);
         $('#price').val(item.price);
-        $('#imagePreview').attr('src', item.imageURL).show();
+        console.log(item.imageURL);
+        const url = URL.revokeObjectURL(item.imageURL)
+        $('#itemImage').attr('src', url);
         editingItem = item;
         $('#add-item-btn').text('Update Item');
     }
